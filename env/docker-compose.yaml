@@ -1,0 +1,30 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  postgresql:
+    image: docker.io/bitnami/postgresql:15.4.0
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+      - 'ALLOW_EMPTY_PASSWORD=yes'
+      - 'POSTGRESQL_DATABASE=warehouse'
+      # - 'POSTGRESQL_PASSWORD=123123'
+    networks:
+      - 'app-tier'
+
+  act_dataload_job:
+    image: 'huypham/data-integration:lastest'
+    depends_on:
+      - 'postgresql'
+    networks:
+      - 'app-tier'
+
+volumes:
+  postgresql_data:
+    driver: local
