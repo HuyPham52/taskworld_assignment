@@ -29,4 +29,5 @@ class TestScenario(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    LoadDataFromPostgreSQL.load_config()
     unittest.main(verbosity=2)
