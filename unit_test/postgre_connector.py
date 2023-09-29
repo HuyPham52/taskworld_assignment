@@ -5,7 +5,13 @@ import pandas as pd
 
 
 class LoadDataFromPostgreSQL:
+
+    def load_config():
+        from dotenv import load_dotenv
+        load_dotenv()
+
     def __init__(self):
+        
         self.host = os.getenv('DB_HOSTNAME')
         self.database = 'warehouse'
         self.user = os.getenv('DB_USERNAME')
