@@ -8,14 +8,17 @@ import pandas as pd
 class TestScenario(unittest.TestCase):
     
     def test_top_workspace(self):
-        user_id = '59c1507a3136e2776dbe00c9'
+        user_id = '5bfd0e8d472bcf0009a1014d'
         df = load_data("resources/data/activity.csv")
-        source_value = df[df['user_id'] == user_id].groupby('user_id').max().iloc[0]['workspace_id']
+        #xyz = df.query('total_activity == total_activity.max()')
+        #source_value = df[df['user_id'] == user_id].groupby('user_id').max().iloc[0]['workspace_id']
+        source_df = df[df['user_id'] == user_id]
+        source_value = source_df.query('total_activity == total_activity.max()').iloc[0]['workspace_id']
         target_value = LoadDataFromPostgreSQL().extract_data_from_postgre(user_id=user_id).get('top_workspace')[0]
         self.assertEqual(source_value, target_value)
 
     def test_longest_streak(self):
-        user_id = '59c1507a3136e2776dbe00c9'
+        user_id = '5bfd0e8d472bcf0009a1014d'
         df = load_data("resources/data/activity.csv")
         source_df = df[df['user_id'] == user_id]
         source_df['active_date'] = pd.to_datetime(source_df['active_date'])
